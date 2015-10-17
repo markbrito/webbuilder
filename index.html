@@ -177,6 +177,7 @@ function checkError(json){
 }
 function auth(askfortoken){
     if(askfortoken){
+debugger;
 	try{token=document.location.search.split('=')[1];}catch(ex){
 	try{token= window.localStorage.getItem("TOKEN");}catch(exx){}
         }
