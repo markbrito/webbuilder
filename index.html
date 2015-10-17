@@ -177,8 +177,10 @@ function checkError(json){
 }
 function auth(askfortoken){
     if(askfortoken){
-	try{token=document.location.search.split('=')[1];}catch(ex){}
-	var ret=prompt('GITHUB TOKEN',token);
+	try{token=document.location.search.split('=')[1];}catch(ex){
+	try{token= window.localStorage.getItem("TOKEN");}catch(exx){}
+        }
+var ret=prompt('GITHUB TOKEN',token);
 	if(ret!=null){token=ret;}
     }
     jsonp(AUTHURL.replace('TOKEN',token));
@@ -186,6 +188,7 @@ function auth(askfortoken){
 function gitauth(json){
     if(checkError(json)){;}
     else{
+      window.localStorage.setItem("TOKEN", token);
 	document.getElementById('hrefRepository').href=json.data.html_url+
 	    "?tab=repositories&r="+Math.round(Math.random()*1000000);
 	for(var d in json.data){
