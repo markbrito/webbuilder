@@ -177,10 +177,14 @@ function checkError(json){
 }
 function auth(askfortoken){
     if(askfortoken){
-debugger;
-	try{token=document.location.search.split('=')[1];}catch(ex){
+try{
+if(document.location.search.split('=')[0]=='key'){
+	try{token=document.location.search.split('=')[1];}catch(ex){}
+}else{
 	try{token= window.localStorage.getItem("TOKEN");}catch(exx){}
-        }
+}
+}catch(exxx){}
+        
 var ret=prompt('GITHUB TOKEN',token);
 	if(ret!=null){token=ret;}
     }
