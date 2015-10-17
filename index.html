@@ -244,7 +244,7 @@ function gitNewSaveDeleteCommit(newFile,deleteFile,commit){
     client.open((!deleteFile)?"PUT":"DELETE", logurl="https://api.github.com/repos/"+owner+"/"+
 		repository+"/contents/"+path+filename+"?access_token="+token+(newFile || deleteFile?'':"&sha="+sha)+"&r="+Math.round(Math.random()*1000000),true);
     textareaLog.value+=logurl;
-    var message='{"message": "'+prompt('Enter Commit Message',(deleteFile?"Deleted":(newFile?"New":"Update"))+)+
+    var message='{"message": "'+prompt('Enter Commit Message',(deleteFile?"Deleted":(newFile?"New":"Update")))+
 	'","committer": {'+
 	' "name": "'+owner+'", "email": "'+email+'"}'+
 	((!deleteFile)? ',"content": "'+((document.getElementById('checkboxEncode').checked)?btoa((textareaEdit.value)):textareaEdit.value)+'"':'')+
