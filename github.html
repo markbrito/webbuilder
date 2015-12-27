@@ -1,0 +1,239 @@
+<!doctype html>
+<html>
+<head>
+<script type="text/javascript">
+var AUTHURL="https://api.github.com/user?access_token=TOKEN&callback=gitauth";
+var REPOSURL;
+var selectRepos;
+var selectContents;
+var selectTree;
+var selectFiles;
+var textareaEdit;
+var imageType;
+var imageLoad;
+var textPath;
+var textFile;
+var token="";
+var sha="";
+function init(){
+    getElements();
+    auth();
+}
+function getElements(){
+    selectRepos=document.getElementById('selectRepos');
+    selectContents=document.getElementById('selectContents');
+    selectTree=document.getElementById('selectTree');
+    selectFiles=document.getElementById('selectFiles');
+    textareaEdit=document.getElementById('textareaEdit');
+    imageType=document.getElementById('imageType');
+    textFile=document.getElementById('textFile');
+    textPath=document.getElementById('textPath');
+}
+function file(){
+    imageType.src="https://raw.githubusercontent.com/teambox/Free-file-icons/master/48px/_blank.png";
+    imageLoad=new Image();
+    imageLoad.onload=function(){imageType.src=imageLoad.src;}
+    var optionValue=selectFiles.options[selectFiles.selectedIndex].text;
+    var extension=optionValue.substring(optionValue.lastIndexOf('.')+1).toLowerCase();
+    imageLoad.src="https://raw.githubusercontent.com/teambox/Free-file-icons/master/48px/"+extension+".png";
+    textPath.value=selectContents.options[selectContents.selectedIndex].text+ selectTree.options[selectTree.selectedIndex].text;
+    var fileVal=selectFiles.options[selectFiles.selectedIndex].text;
+    textFile.value=fileVal;
+    if(fileVal.indexOf('/')>=0){
+	textFile.value=fileVal.substring(fileVal.lastIndexOf('/')+1);
+	textPath.value=selectContents.options[selectContents.selectedIndex].text+fileVal.substr(0,fileVal.lastIndexOf('/')+1);
+    }
+    if(textPath.value.indexOf("//")>=0){textPath.value=textPath.value.replace('//','/');}
+    jsonp(selectFiles.options[selectFiles.selectedIndex].value);
+}
+function gitfile(json){
+    textareaEdit.value=atob(json.data.content);
+    sha=json.data.sha;
+}
+function gitpicture(json){
+    imageType.src=json.responseData.results[0].url;
+}
+function files(){
+    if(selectTree.selectedIndex==0){
+	tree();
+    }else{
+	textPath.value=selectTree.options[selectTree.selectedIndex].text;
+	jsonp(selectTree.options[selectTree.selectedIndex].value);
+    }
+}
+function gitfiles(json){
+    selectFiles.innerHTML="";
+    for(var i=0;i<json.data.tree.length;++i){
+	if(json.data.tree[i].type=="blob"){
+	    selectFiles.innerHTML+='<option value="'+json.data.tree[i].url+'?callback=gitfile">'+json.data.tree[i].path+'</option>';	    
+	}
+    }
+}
+function tree(){
+    if(selectContents.selectedIndex==0){
+	contents()
+    }else{
+	jsonp(selectContents.options[selectContents.selectedIndex].value);
+    }
+}
+function gittree(json){
+    selectTree.innerHTML='<option selected="true">/</option>'
+    selectFiles.innerHTML="";
+    for(var i=0;i<json.data.tree.length;++i){
+	if(json.data.tree[i].type=="tree"){
+	    selectTree.innerHTML+='<option value="'+json.data.tree[i].url+'?callback=gitfiles">'+json.data.tree[i].path+'/</option>';	    
+	}else{
+	    selectFiles.innerHTML+='<option value="'+json.data.tree[i].url+'?callback=gitfile">'+json.data.tree[i].path+'</option>';	    
+	}
+    }
+}
+function contents(){
+    jsonp(selectRepos.options[selectRepos.selectedIndex].value+"?callback=gitcontents");
+}
+function gitcontents(json){
+    selectContents.innerHTML='<option selected="true">/</option>';
+    selectTree.innerHTML='<option selected="true">/</option>';
+    selectFiles.innerHTML="";
+    for(var i=0;i<json.data.length;++i){
+	if(json.data[i].type=="dir"){
+	    selectContents.innerHTML+='<option value="'+json.data[i].git_url+'?recursive=true&callback=gittree">'+json.data[i].name+'/</option>';	    
+	}
+	if(json.data[i].type=="file"){
+	    selectFiles.innerHTML+='<option value="'+json.data[i].git_url+'?callback=gitfile">'+json.data[i].name+'</option>';	    
+	}
+    }
+}
+function repos(){
+    jsonp(REPOSURL+"?callback=gitrepos");
+}
+function gitrepos(json){
+    for(var i=0;i<json.data.length;++i){
+	selectRepos.innerHTML+='<option value="'+json.data[i].contents_url.replace(/\{.+\}/,"")+'">'+json.data[i].name+'</option>';
+    }
+}
+function auth(){
+    try{token=document.location.search.split('=')[1];}catch(ex){}
+    var ret=prompt('GITHUB TOKEN',token);
+    if(ret!=null){token=ret;}
+    jsonp(AUTHURL.replace('TOKEN',token));
+}
+function gitauth(json){
+    if(json.data.login==undefined){
+	alert(json.data.message);
+    }else{
+	for(var d in json.data){
+	    var e=document.getElementById(d);
+	    if(e!=null){
+		var a=e.getAttribute("data-attribute");
+		if(a!=null){
+		    e.setAttribute(e.getAttribute("data-attribute"),json.data[d]);
+		}
+		var p=e.getAttribute("data-property");
+		if(p!=null){
+		    eval("e."+p+"='"+json.data[d]+"';");
+		}
+	    }
+	}
+	REPOSURL=json.data['repos_url'];
+	repos();
+    }
+}
+var script;
+function jsonp(url){
+    var s = document.createElement("script");
+    script=s;
+    var urlcc=url+(url.indexOf('?')>=0?"&":"?")+"r="+Math.round(Math.random()*1000000);
+    s.src = urlcc;
+    s.type = "text/javascript";
+    s.async = true;
+    s.onload = s.onreadystatechange = function(data) {
+	if ( !this.readyState || this.readyState === "loaded" || this.readyState === "complete" ) {
+	    script.onload = script.onreadystatechange = null;
+	    if ( script && script.parentNode ) {
+		script.parentNode.removeChild( script );
+	    }
+	}
+    };
+    document.getElementsByTagName('head')[0].appendChild( script );
+}
+function saveGit(newFile){
+    var client = new XMLHttpRequest();
+    var repository=selectRepos.options[selectRepos.selectedIndex].text;
+    var owner=document.getElementById('login').innerHTML;
+    var path=textPath.value;
+    var filename=textFile.value;
+    var email=document.getElementById('email').innerHTML;
+    if(path=='/'){path="";}
+    client.open("PUT", "https://api.github.com/repos/"+owner+"/"+
+		repository+"/contents/"+path+filename+"?access_token="+token+(newFile?'':"&sha="+sha)+"&r="+Math.round(Math.random()*1000000),true);
+    var message='{"message": "'+prompt('Enter Commit Message')+
+	'","committer": {'+
+	' "name": "'+owner+'", "email": "'+email+'"'+
+	'  },  "content": "'+btoa((textareaEdit.value))+'"'+
+	((newFile)?'':',"sha":"'+sha+'"')+
+	'}';
+    client.onreadystatechange = function(){
+	if(this.readyState == this.DONE) {
+	    if(this.status == 200){
+	    }
+	}
+    };
+    client.send(message);
+}
+</script>
+<style type="text/css">
+body{font-size:large;}
+a,input,textarea,select{display:block;}
+#login,#email{width:100px;text-align:left;}
+#avatar_url{width:100px;height:100px;}
+</style>
+</head>
+  <body onload="init();">
+    <span style="clear:both;float:left;padding:5px;">
+      <img id="avatar_url" data-attribute="src" src="https://raw.githubusercontent.com/teambox/Free-file-icons/master/48px/_blank.png" />
+      <div id="login" data-property="innerHTML"></div>
+      <div id="company" data-property="innerHTML"></div>
+      <div id="email" data-property="innerHTML"></div>
+      <a target="_new" id="html_url" data-attribute="href" data-property="innerHTML"></a>
+      <a id="blog" target="_new" data-attribute="href" data-property="innerHTML"></a>
+    </span>
+    <form>
+      <span id="spanRepos" style="float:left;padding:5px;">
+	Repository
+	<select id="selectRepos" size="12" onchange="contents();"></select>
+      </span>
+      <span id="spanContents" style="float:left;padding:5px;">
+	Contents
+	<select id="selectContents" size="12" onchange="tree();"></select>
+      </span>
+      <span id="spanTree" style="float:left;padding:5px;">
+	Tree
+	<select id="selectTree" size="12" onchange="files();"></select>
+      </span>
+      <span id="spanFiles" style="float:left;padding:5px;">
+	Files
+	<select id="selectFiles" size="12" onchange="file();"></select>
+      </span>
+      <div id="divEdit" style="width:100%;">
+	<span style="width:100%;float:left;vertical-align:middle;">
+	  <img id="imageType" style="width:85px;height:65px;float:left;" src="https://raw.githubusercontent.com/teambox/Free-file-icons/master/48px/_blank.png" />
+	  <span style="float:left;">File</span>
+	  <input id="textFile" type="text" value="" style="float:left;"/>
+	  <span style="float:left;">Path</span>
+	  <input id="textPath" type="text" value="" style="float:left;"/>
+	  <div style="float:left;">
+            <input type="button" value="Repos" onclick="window.open('https://github.com/markbrito?tab=repositories'+"&r="+Math.round(Math.random()*1000000));" style="float:left;"/>
+	    <input type="button" value="Save" onclick="saveGit(false);" style="float:left;"/>
+	    <input type="button" value="Erase" style="float:left;"/>
+	    <input type="button" value="New" onclick="saveGit(true);" style="float:left;"/>
+	    <input type="button" value="Upload" style="float:left;"/>
+	    <input type="button" value="Download" style="float:left;"/>
+	    <input type="button" value="Zip" style="float:left;"/>
+	    <input type="button" value="Pull" style="float:left;"/>
+	  </div>
+	  <textarea id="textareaEdit" style="width:99%;height: 600px;"></textarea>
+	</span>
+    </div>
+    </form>
+  </body>
+</html>
