@@ -72,7 +72,7 @@ function gitfile(json){
     }else if(ext=="js" || ext=="json"){
       if (atob(json.data.content).indexOf("jsonHash")==0){
         document.getElementById('hrefOpenWebBuilder').style.display='block';
-        document.getElementById('hrefOpenWebBuilder').href='https://rawgit.com/markbrito/markbrito-webbuilder/master/WebBuilder.html?js=https://rawgit.com/'+owner+'/'+repository+'/master/'+path+fileName;
+        document.getElementById('hrefOpenWebBuilder').href='https://rawgit.com/markbrito/bouncechat/master/WebBuilder.html?js=https://rawgit.com/'+owner+'/'+repository+'/master/'+path+fileName;
       }
       textareaEdit.value=atob(json.data.content);
     }else if(ext=="dae"){
