@@ -1,11 +1,16 @@
 jsonHash[divHTML.id].c=[
     {
-        "e": "SCRIPT",
-        "id": "SCRIPTTransitions",
-        "innerHTML": "var%20INTERVAL%3D10%3B%0Avar%20COUNT%3D1000%3B%0Avar%20iterator%3D0%3B%0Avar%20divTitle%3Ddocument.getElementById%28%27divTitle%27%29%3B%0Afunction%20fade%28%29%7B%0AdivTitle.style.opacity%3Diterator++/COUNT%3B%0Aif%28iterator%3CCOUNT%29%7B%0AsetTimeout%28fade%2CINTERVAL%29%3B%0A%7D%0A%7D%0Afunction%20startFade%28%29%7B%0Aiterator%3D0%3B%0AsetTimeout%28fade%2CINTERVAL%29%3B%0A%7D",
-        "style": {},
-        "movetoparentxpath": "/html/head",
-        "type": "text/javascript"
+        "e": "DIV",
+        "id": "divBG",
+        "innerHTML": "",
+        "style": {
+            "position": "fixed",
+            "left": "0%",
+            "top": "0%",
+            "width": "100%",
+            "height": "100%",
+            "background-color": "black"
+        }
     },
     {
         "e": "DIV",
@@ -58,8 +63,132 @@ jsonHash[divHTML.id].c=[
                 "id": "BUTTONTextInTransition",
                 "innerHTML": "Text%20In",
                 "style": {},
-                "onclick": "startFade%28%29%3B",
+                "onclick": "var%20INTERVAL%3D10%3Bvar%20COUNT%3D400%3Bvar%20iterator%3D0%3Bfunction%20fade%28%29%7Bvar%20divTitle%3Ddocument.getElementById%28%27divTitle%27%29%3BdivTitle.style.opacity%3D%28parseFloat%28iterator++%29/parseFloat%28COUNT%29%29%3Bif%28iterator%3CCOUNT%29%7BsetTimeout%28fade%2CINTERVAL%29%3B%7D%7Dfunction%20startFade%28%29%7Biterator%3D0%3BsetTimeout%28fade%2CINTERVAL%29%3B%7DsetTimeout%28fade%2CINTERVAL%29%3B",
                 "movetoparentxpath": ""
+            },
+            {
+                "e": "BUTTON",
+                "id": "BUTTONFadePageOut",
+                "innerHTML": "Fade%20Page%20Out",
+                "style": {},
+                "onclick": "var%20INTERVAL%3D10%3Bvar%20COUNT%3D400%3Bvar%20iterator%3D0%3Bfunction%20fade%28%29%7Bvar%20divTitle%3Ddocument.getElementById%28%27divMain%27%29%3BdivTitle.style.opacity%3D1-%28parseFloat%28iterator++%29/parseFloat%28COUNT%29%29%3Bif%28iterator%3CCOUNT%29%7BsetTimeout%28fade%2CINTERVAL%29%3B%7D%7Dfunction%20startFade%28%29%7Biterator%3D0%3BsetTimeout%28fade%2CINTERVAL%29%3B%7DsetTimeout%28fade%2CINTERVAL%29%3B"
+            }
+        ]
+    },
+    {
+        "e": "DIV",
+        "id": "divGame",
+        "style": {
+            "position": "fixed",
+            "left": "0%",
+            "top": "0%",
+            "width": "100%",
+            "height": "100%",
+            "background-color": "black"
+        },
+        "c": [
+            {
+                "e": "DIV",
+                "id": "divGameTitle",
+                "style": {
+                    "position": "fixed",
+                    "left": "10%",
+                    "top": "10%",
+                    "width": "80%",
+                    "height": "20%",
+                    "font-size": "14pt",
+                    "color": "white",
+                    "font-family": ""
+                },
+                "c": [],
+                "innerHTML": "Fill%20in%20the%20blanks%20with%20proper%20letters%20to%20spell%20the%20word%20correctly."
+            },
+            {
+                "e": "DIV",
+                "id": "divWord",
+                "style": {
+                    "position": "fixed",
+                    "left": "10%",
+                    "top": "30%",
+                    "width": "80%",
+                    "height": "40%",
+                    "text-align": "center",
+                    "vertical-align": "middle",
+                    "color": "white",
+                    "font-size": "44pt"
+                },
+                "c": [
+                    {
+                        "e": "SPAN",
+                        "id": "spanLetter1",
+                        "innerHTML": "M",
+                        "style": {
+                            "position": ""
+                        }
+                    },
+                    {
+                        "e": "SPAN",
+                        "id": "spanLetter2",
+                        "onkeypress": "debugger;",
+                        "innerHTML": "_",
+                        "style": {
+                            "position": ""
+                        },
+                        "contenteditable": "true",
+                        "c": []
+                    },
+                    {
+                        "e": "SPAN",
+                        "id": "spanLetter3",
+                        "innerHTML": "L",
+                        "style": {
+                            "position": ""
+                        }
+                    },
+                    {
+                        "e": "SPAN",
+                        "id": "spanLetter4",
+                        "innerHTML": "A",
+                        "style": {
+                            "position": ""
+                        }
+                    },
+                    {
+                        "e": "SPAN",
+                        "id": "spanLetter5",
+                        "innerHTML": "N",
+                        "style": {
+                            "position": ""
+                        }
+                    },
+                    {
+                        "e": "SPAN",
+                        "onkeyup": "debugger;",
+                        "id": "spanLetter6",
+                        "innerHTML": "_",
+                        "style": {
+                            "position": ""
+                        },
+                        "contenteditable": "true",
+                        "c": []
+                    },
+                    {
+                        "e": "SPAN",
+                        "id": "spanLetter7",
+                        "innerHTML": "M",
+                        "style": {
+                            "position": ""
+                        }
+                    },
+                    {
+                        "e": "SPAN",
+                        "id": "spanLetter8",
+                        "innerHTML": "A",
+                        "style": {
+                            "position": ""
+                        }
+                    }
+                ]
             }
         ]
     }
