@@ -85,7 +85,7 @@ jsonHash[divHTML.id].c=[
             "width": "100%",
             "height": "100%",
             "background-color": "black",
-            "display": "none"
+            "display": ""
         },
         "c": [
             {
@@ -129,12 +129,22 @@ jsonHash[divHTML.id].c=[
                         }
                     },
                     {
-                        "e": "SPAN",
-                        "id": "spanLetter2",
-                        "onkeypress": "debugger;",
-                        "innerHTML": "_",
+                        "e": "INPUT",
+                        "type": "text",
+                        "size": "1",
+                        "onfocus": "this.value='';",
+                        "onkeydown": "this.value='';",
+                        "onkeyup": " var charCode = (event.which) ? event.which : event.keyCode;this.value=String.fromCharCode(charCode);",
+                        "id": "inputLetter2",
+                        "value": "_",
                         "style": {
-                            "position": ""
+                            "position": "",
+                            "font-size": "44pt",
+                            "display": "inline",
+                            "width": "44px",
+                            "background-color": "black",
+                            "color": "white",
+                            "border": "1px dotted white"
                         },
                         "contenteditable": "true",
                         "c": []
@@ -145,7 +155,8 @@ jsonHash[divHTML.id].c=[
                         "innerHTML": "L",
                         "style": {
                             "position": ""
-                        }
+                        },
+                        "contenteditable": "true"
                     },
                     {
                         "e": "SPAN",
