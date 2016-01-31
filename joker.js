@@ -69,9 +69,9 @@ jsonHash[divHTML.id].c=[
             {
                 "e": "BUTTON",
                 "id": "BUTTONFadePageOut",
-                "innerHTML": "Fade%20Page%20Out",
+                "innerHTML": "Fade%20Game",
                 "style": {},
-                "onclick": "var%20INTERVAL%3D10%3Bvar%20COUNT%3D400%3Bvar%20iterator%3D0%3Bfunction%20fade%28%29%7Bvar%20divTitle%3Ddocument.getElementById%28%27divMain%27%29%3BdivTitle.style.opacity%3D1-%28parseFloat%28iterator++%29/parseFloat%28COUNT%29%29%3Bif%28iterator%3CCOUNT%29%7BsetTimeout%28fade%2CINTERVAL%29%3B%7D%7Dfunction%20startFade%28%29%7Biterator%3D0%3BsetTimeout%28fade%2CINTERVAL%29%3B%7DsetTimeout%28fade%2CINTERVAL%29%3B"
+                "onclick": "var%20INTERVAL%3D10%3Bvar%20COUNT%3D400%3Bvar%20iterator%3D0%3Bfunction%20fade%28%29%7Bvar%20divTitle%3Ddocument.getElementById%28%27divMain%27%29%3BdivTitle.style.opacity%3D1-%28parseFloat%28iterator++%29/parseFloat%28COUNT%29%29%3Bif%28iterator%3CCOUNT%29%7BsetTimeout%28fade%2CINTERVAL%29%3B%7Delse%7BstartFadeIn%28%29%3B%7D%7Dfunction%20startFade%28%29%7Biterator%3D0%3BsetTimeout%28fade%2CINTERVAL%29%3B%7DsetTimeout%28fade%2CINTERVAL%29%3Bfunction%20fadeIn%28%29%7Bvar%20divGame%3Ddocument.getElementById%28%27divGame%27%29%3BdivGame.style.opacity%3D1-%28parseFloat%28iterator++%29/parseFloat%28COUNT%29%29%3Bif%28iterator%3CCOUNT%29%7BsetTimeout%28fadeIn%2CINTERVAL%29%3B%7D%7Dfunction%20startFadeIn%28%29%7Biterator%3D0%3BsetTimeout%28fadeIn%2CINTERVAL%29%3B%7D"
             }
         ]
     },
@@ -84,7 +84,8 @@ jsonHash[divHTML.id].c=[
             "top": "0%",
             "width": "100%",
             "height": "100%",
-            "background-color": "black"
+            "background-color": "black",
+            "display": "none"
         },
         "c": [
             {
@@ -115,7 +116,8 @@ jsonHash[divHTML.id].c=[
                     "text-align": "center",
                     "vertical-align": "middle",
                     "color": "white",
-                    "font-size": "44pt"
+                    "font-size": "44pt",
+                    "display": ""
                 },
                 "c": [
                     {
